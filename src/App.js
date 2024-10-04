@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import StarshipList from './components/StarshipList';
+import StarshipDetails from './components/StarshipDetails';
+import SearchBar from './components/SearchBar';
 
 function App() {
+  const [selectedShip, setSelectedShip] = useState(null);
+  const [filteredShips, setFilteredShips] = useState([]);
+
+  const handleSearch = (results) => {
+    setFilteredShips(results);
+  };
+
+  const handleBack = () => {
+    setSelectedShip(null);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <SearchBar onSearch={handleSearch} />
+      {!selectedShip ? (
+        <StarshipList onSelectShip={setSelectedShip} />
+      ) : (
+        <StarshipDetails starship={selectedShip} onBack={handleBack} />
+      )}
     </div>
   );
 }
